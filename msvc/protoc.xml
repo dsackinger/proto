@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ProjectSchemaDefinitions xmlns="clr-namespace:Microsoft.Build.Framework.XamlTypes;assembly=Microsoft.Build.Framework" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:sys="clr-namespace:System;assembly=mscorlib" xmlns:transformCallback="Microsoft.Cpp.Dev10.ConvertPropertyCallback">
+  <Rule Name="Protobuf" PageTemplate="tool" DisplayName="Protobuf" SwitchPrefix="--" Order="200">
+    <Rule.DataSource>
+      <DataSource Persistence="ProjectFile" ItemType="Protobuf" />
+    </Rule.DataSource>
+    <Rule.Categories>
+      <Category Name="General">
+        <Category.DisplayName>
+          <sys:String>General</sys:String>
+        </Category.DisplayName>
+      </Category>
+      <Category Name="Protobuf Options">
+        <Category.DisplayName>
+          <sys:String>Protobuf Options</sys:String>
+        </Category.DisplayName>
+      </Category>
+      <Category Name="Command Line" Subtype="CommandLine">
+        <Category.DisplayName>
+          <sys:String>Command Line</sys:String>
+        </Category.DisplayName>
+      </Category>
+    </Rule.Categories>
+
+    <StringListProperty Name="ProtoPath" Category="Protobuf Options" IsRequired="true" HelpUrl="https://www.gnu.org/software/Protobuf/manual/html_node/Protobuf-Options.html#Protobuf-Options" DisplayName="Proto Path" Description="Specify the directory in which to search for imports. --proto_path=PATH" Switch="proto_path=&quot;[value]&quot;"/>
+    <StringProperty Subtype="folder" Name="CppOut" Category="Protobuf Options" IsRequired="true" HelpUrl="https://www.gnu.org/software/Protobuf/manual/html_node/Protobuf-Options.html#Protobuf-Options" DisplayName="Cpp Output" Description="Generate C++ header and source. --cpp_out=OUT_DIR" Switch="cpp_out=&quot;[value]&quot;" />
+
+    <EnumProperty Name="ErrorFormat" Category="Protobuf Options" HelpUrl="https://www.gnu.org/software/Protobuf/manual/html_node/Protobuf-Options.html#Protobuf-Options" DisplayName="Error Format" Description="Set a format in which to print errors. (--error_format=FORMAT)">
+      <EnumValue Name="gcc" DisplayName="gcc" Switch="error_format=gcc"/>
+      <EnumValue Name="msvs" DisplayName="Visual Studio" Switch="error_format=msvs"/>
+    </EnumProperty>
+
+    <BoolProperty Name="PrintFreeFieldNumbers" Category="Protobuf Options" DisplayName="Print Free Field Numbers" Description="Print the free field numbers of the messages defined in the given proto files. (--print_free_field_numbers)" HelpUrl="https://www.gnu.org/software/Protobuf/manual/html_node/Enabling-Traces.html#Enabling-Traces" Switch="print_free_field_numbers" />
+
+    <StringListProperty Name="Inputs" Category="Command Line" IsRequired="true" Switch=" ">
+      <StringListProperty.DataSource>
+        <DataSource
+          Persistence="ProjectFile"
+          ItemType="Protobuf"
+          SourceType="Item" />
+      </StringListProperty.DataSource>
+    </StringListProperty>
+    
+    <StringProperty Name="CommandLineTemplate" DisplayName="Command Line" Visible="False" IncludeInCommandLine="False" />
+    
+    <DynamicEnumProperty Name="ProtobufBeforeTargets" Category="General" EnumProvider="Targets" IncludeInCommandLine="False">
+      <DynamicEnumProperty.DisplayName>
+        <sys:String>Execute Before</sys:String>
+      </DynamicEnumProperty.DisplayName>
+      <DynamicEnumProperty.Description>
+        <sys:String>Specifies the targets for the build customization to run before.</sys:String>
+      </DynamicEnumProperty.Description>
+      <DynamicEnumProperty.ProviderSettings>
+        <NameValuePair Name="Exclude" Value="^ProtobufBeforeTargets|^Compute" />
+      </DynamicEnumProperty.ProviderSettings>
+      <DynamicEnumProperty.DataSource>
+        <DataSource Persistence="ProjectFile" HasConfigurationCondition="true" />
+      </DynamicEnumProperty.DataSource>
+    </DynamicEnumProperty>
+    
+    <DynamicEnumProperty Name="ProtobufAfterTargets" Category="General" EnumProvider="Targets" IncludeInCommandLine="False">
+      <DynamicEnumProperty.DisplayName>
+        <sys:String>Execute After</sys:String>
+      </DynamicEnumProperty.DisplayName>
+      <DynamicEnumProperty.Description>
+        <sys:String>Specifies the targets for the build customization to run after.</sys:String>
+      </DynamicEnumProperty.Description>
+      <DynamicEnumProperty.ProviderSettings>
+        <NameValuePair Name="Exclude" Value="^ProtobufAfterTargets|^Compute" />
+      </DynamicEnumProperty.ProviderSettings>
+      <DynamicEnumProperty.DataSource>
+        <DataSource Persistence="ProjectFile" ItemType="" HasConfigurationCondition="true" />
+      </DynamicEnumProperty.DataSource>
+    </DynamicEnumProperty>
+
+    <StringProperty Name="Protoc" DisplayName="Compiler" Visible="False" IncludeInCommandLine="False" />
+    <StringListProperty Name="Outputs" DisplayName="Outputs" Visible="False" IncludeInCommandLine="False" />
+    <StringProperty Name="ExecutionDescription" DisplayName="Execution Description" Visible="False" IncludeInCommandLine="False" />
+    <StringListProperty Name="AdditionalDependencies" DisplayName="Additional Dependencies" IncludeInCommandLine="False" Visible="false" />
+    <StringProperty Subtype="AdditionalOptions" Name="AdditionalOptions" Category="Command Line">
+      <StringProperty.DisplayName>
+        <sys:String>Additional Options</sys:String>
+      </StringProperty.DisplayName>
+      <StringProperty.Description>
+        <sys:String>Additional Options</sys:String>
+      </StringProperty.Description>
+    </StringProperty>
+  </Rule>
+  <ItemType Name="Protobuf" DisplayName="Protobuf files" />
+  <FileExtension Name="*.proto" ContentType="Protobuf" />
+  <ContentType Name="Protobuf" DisplayName="Protobuf files" ItemType="Protobuf" />
+</ProjectSchemaDefinitions>

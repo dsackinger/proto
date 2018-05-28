@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Protobuf">
+      <UniqueIdentifier>{c6ab0e1d-83c2-43b7-a283-7d195289d508}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="msvc">
+      <UniqueIdentifier>{d2c7f367-2a9f-4eb2-8197-ed640ad96e46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Protobuf\x64">
+      <UniqueIdentifier>{45f56b98-d00a-49c5-b21d-bef1c0e6ef1c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Protobuf\x64\Debug">
+      <UniqueIdentifier>{0a0a3faa-f522-43a5-9e0d-1bb75821fc97}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Protobuf\x64\Release">
+      <UniqueIdentifier>{a5d8387e-8ac0-4cdc-8178-ad2d2b136549}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Protobuf\x86">
+      <UniqueIdentifier>{8f086f89-9494-4a68-9162-8532c1d3d6ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Protobuf\x86\Debug">
+      <UniqueIdentifier>{c6feebd1-3fc3-4b08-bb46-c2302779a204}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Protobuf\x86\Release">
+      <UniqueIdentifier>{ada4badd-261c-4c87-8a73-cc7ba949003a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\targetver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="x64\Debug\test.pb.cc">
+      <Filter>Protobuf\x64\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\test.pb.cc">
+      <Filter>Protobuf\x86\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\test.pb.cc">
+      <Filter>Protobuf\x86\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="x64\Release\test.pb.cc">
+      <Filter>Protobuf\x64\Release</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="protoc.targets">
+      <Filter>msvc</Filter>
+    </None>
+    <None Include="protoc.props">
+      <Filter>msvc</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="protoc.xml">
+      <Filter>msvc</Filter>
+    </Xml>
+  </ItemGroup>
+  <ItemGroup>
+    <Protobuf Include="..\test.proto">
+      <Filter>Protobuf</Filter>
+    </Protobuf>
+  </ItemGroup>
+</Project>
