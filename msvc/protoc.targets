@@ -1,69 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <PropertyPageSchema Include="$(MSBuildThisFileDirectory)$(MSBuildThisFileName).xml" />
+    <PropertyPageSchema
+      Include="$(MSBuildThisFileDirectory)$(MSBuildThisFileName).xml" />
     <AvailableItemName Include="Protobuf">
-      <Targets>ProtobufTarget</Targets>
+      <Targets>_Protobuf</Targets>
     </AvailableItemName>
   </ItemGroup>
-  <UsingTask
-    TaskName="Protobuf"
-    TaskFactory="XamlTaskFactory"
-    AssemblyName="Microsoft.Build.Tasks.v4.0">
-    <Task>$(MSBuildThisFileDirectory)$(MSBuildThisFileName).xml</Task>
-  </UsingTask>
-  <Target Name="MakeDirsForProtoc" Outputs="%(Protoc.OutputDirectory)">
-    <!-- List of directories and files whose directories should be made prior to Protoc -->
-    <PropertyGroup>
-      <Protoc_OutputDir>%(Protoc.OutputDirectory)</Protoc_OutputDir>
-    </PropertyGroup>
-    <ItemGroup Condition="'@(Protoc)'!=''">
-      <ProtocDirsToMake Include="$([System.IO.Path]::Combine('$(Protoc_OutputDir)','%(Protoc.DllDataFileName)'))" Condition="'%(Protoc.DllDataFileName)'!=''"/>
-    </ItemGroup>
-    <Makedir Directories="@(ProtocDirsToMake->DirectoryName()->Distinct())" />
-    <ItemGroup>
-      <ProtocDirsToMake Remove="@(ProtocDirsToMake)" />
-    </ItemGroup>
-  </Target>
-
-  <Target
-    Name="ProtobufTarget"
-    BeforeTargets="$(ProtobufBeforeTargets)"
-    AfterTargets="$(ProtobufAfterTargets)"
-    Condition="'@(Protobuf)' != ''"
-    DependsOnTargets="$(ProtobufDependsOn);ComputeProtobufOutput;MakeDirsForProtoc"
-    Outputs="%(Protobuf.Outputs)"
-    Inputs="%(Protobuf.Identity);%(Protobuf.AdditionalDependencies);$(MSBuildProjectFile)">
-    <ItemGroup
-      Condition="'@(SelectedFiles)' != ''">
-      <Protobuf
-        Remove="@(Protobuf)"
-        Condition="'%(Identity)' != '@(SelectedFiles)'" />
-    </ItemGroup>
-    <ItemGroup>
-      <Protobuf_tlog
-        Include="%(Protobuf.Outputs)"
-        Condition="'%(Protobuf.Outputs)' != '' and '%(Protobuf.ExcludedFromBuild)' != 'true'">
-        <Source>@(Protobuf, '|')</Source>
-      </Protobuf_tlog>
-    </ItemGroup>
-    <Message
-      Importance="High"
-      Text="%(Protobuf.ExecutionDescription)" />
-    <WriteLinesToFile
-      Condition="'@(Protobuf_tlog)' != '' and '%(Protobuf_tlog.ExcludedFromBuild)' != 'true'"
-      File="$(IntDir)$(ProjectName).write.1.tlog"
-      Lines="^%(Protobuf_tlog.Source);@(Protobuf_tlog-&gt;'%(Fullpath)')" />
-    <Protobuf
-      Condition="'@(Protobuf)' != '' and '%(Protobuf.ExcludedFromBuild)' != 'true'"
-      CommandLineTemplate="%(Protobuf.CommandLineTemplate)"
-      ProtoPath="%(Protobuf.ProtoPath)"
-      CppOut="%(Protobuf.CppOut)"
-      ErrorFormat="%(Protobuf.ErrorFormat)"
-      PrintFreeFieldNumbers="%(Protobuf.PrintFreeFieldNumbers)"
-      AdditionalOptions="%(Protobuf.AdditionalOptions)"
-      Inputs="%(Protobuf.Identity)" />
-  </Target>
   <PropertyGroup>
     <ComputeLinkInputsTargets>
       $(ComputeLinkInputsTargets);
@@ -74,15 +17,109 @@
       ComputeProtobufOutput;
     </ComputeLibInputsTargets>
   </PropertyGroup>
+  <UsingTask
+    TaskName="Protobuf"
+    TaskFactory="XamlTaskFactory"
+    AssemblyName="Microsoft.Build.Tasks.v4.0">
+    <Task>$(MSBuildThisFileDirectory)$(MSBuildThisFileName).xml</Task>
+  </UsingTask>
+
+  <Target Name="_WriteProtobufTlogs"
+          Condition="'@(Protobuf)' != '' and '@(SelectedFiles)' == ''">
+    <ItemGroup>
+      <_ProtobufReadTlog Include="^%(Protobuf.FullPath);%(Protobuf.AdditionalDependencies)"
+                     Condition="'%(Protobuf.ExcludedFromBuild)' != 'true' and '%(Protobuf.Outputs)' != ''"/>
+      <_ProtobufWriteTlog Include="^%(Protobuf.FullPath);$([MSBuild]::NormalizePath('$(MSBuildProjectDirectory)', '%(Protobuf.Outputs)'))"
+                      Condition="'%(Protobuf.ExcludedFromBuild)' != 'true' and '%(Protobuf.Outputs)' != ''"/>
+    </ItemGroup>
+
+    <WriteLinesToFile
+      Condition="'@(_ProtobufReadTlog)' != ''"
+      File="$(TLogLocation)Protobuf.read.1u.tlog"
+      Lines="@(_ProtobufReadTlog->MetaData('Identity')->ToUpperInvariant());"
+      Overwrite="true"
+      Encoding="Unicode"/>
+    <WriteLinesToFile
+      Condition="'@(_ProtobufWriteTlog)' != ''"
+      File="$(TLogLocation)Protobuf.write.1u.tlog"
+      Lines="@(_ProtobufWriteTlog->MetaData('Identity')->ToUpperInvariant());"
+      Overwrite="true"
+      Encoding="Unicode"/>
+
+    <ItemGroup>
+      <_ProtobufReadTlog Remove="@(_ProtobufReadTlog)" />
+      <_ProtobufWriteTlog Remove="@(_ProtobufWriteTlog)" />
+    </ItemGroup>
+  </Target>
+
+  <Target
+    Name="_Protobuf"
+    BeforeTargets="$(ProtobufBeforeTargets)"
+    AfterTargets="$(ProtobufAfterTargets)"
+    Condition="'@(Protobuf)' != ''"
+    DependsOnTargets="_WriteProtobufTlogs;MakeDirsForProtobuf"
+    Outputs="@(Protobuf-&gt;'%(Outputs)')"
+    Inputs="@(Protobuf);@(Protobuf->'%(AdditionalDependencies)');$(MSBuildProjectFile)">
+    <ItemGroup Condition="'@(SelectedFiles)' != ''">
+      <Protobuf Remove="@(Protobuf)" Condition="'%(Identity)' != '@(SelectedFiles)'" />
+    </ItemGroup>
+    <Message
+      Importance="High"
+      Text="%(Protobuf.ExecutionDescription)" />
+    <Protobuf
+      Condition="'@(Protobuf)' != '' and '%(Protobuf.ExcludedFromBuild)' != 'true'"
+      CommandLineTemplate="%(Protobuf.CommandLineTemplate)"
+      ProtoPath="%(Protobuf.ProtoPath)"
+      CppOut="%(Protobuf.CppOut)"
+      ErrorFormat="%(Protobuf.ErrorFormat)"
+      PrintFreeFieldNumbers="%(Protobuf.PrintFreeFieldNumbers)"
+      AdditionalOptions="%(Protobuf.AdditionalOptions)"
+      Inputs="%(Protobuf.Identity)"
+      Outputs="@(Protobuf-&gt;'%(Outputs)')"/>
+  </Target>
+
   <Target
     Name="ComputeProtobufOutput"
     Condition="'@(Protobuf)' != ''">
     <ItemGroup>
+      <_EmbedManagedResourceFile Include="@(Protobuf->Metadata('Outputs')->Distinct()->ClearMetadata())" Condition="'%(Protobuf.ExcludedFromBuild)' != 'true'"/>
+    </ItemGroup>
+    <ItemGroup>
       <ProtobufDirsToMake
         Condition="'@(Protobuf)' != '' and '%(Protobuf.ExcludedFromBuild)' != 'true'"
-        Include="%(Protobuf.Outputs)" />
+        Include="%(Protobuf.CppOut)" />
     </ItemGroup>
-    <MakeDir
-      Directories="@(ProtobufDirsToMake-&gt;'%(CppOut)')" />
   </Target>
+
+  <Target Name="MakeDirsForProtobuf" DependsOnTargets="ComputeProtobufOutput;$(ProtobufDependsOn)">
+    <!-- List of directories and files whose directories should be made prior to Protoc -->
+    <!-- <Makedir Directories="@(ProtocDirsToMake->DirectoryName()->Distinct())" /> -->
+    <MakeDir Directories="@(ProtobufDirsToMake)" />
+    <ItemGroup>
+      <ProtobufDirsToMake Remove="@(ProtobufDirsToMake)" />
+    </ItemGroup>
+  </Target>
+
+
+  <!--
+  <Target
+    Name="ProtobufDependsOn"
+    Condition="'@(Protobuf)' != ''">
+    <ItemGroup>
+      <_EmbedManagedResourceFile Include="@(Protobuf->Metadata('Outputs')->Distinct()->ClearMetadata())" Condition="'%(Protobuf.ExcludedFromBuild)' != 'true'"/>
+    </ItemGroup>
+    <ItemGroup>
+      <ProtobufDirsToMake
+        Condition="'@(Protobuf)' != '' and '%(Protobuf.ExcludedFromBuild)' != 'true'"
+        Include="%(Protobuf.CppOut)" />
+    </ItemGroup>
+    <ItemGroup>
+      <ProtobufOutputs 
+        Condition="'@(Protobuf)' != '' and '%(Protobuf.ExcludedFromBuild)' != 'true'"
+        Include="%(Protobuf.CppOut)\%(Filename).pb.cc;%(Protobuf.CppOut)\%(Filename).pb.h" />
+    </ItemGroup>
+  </Target>
+  -->
+
+  
 </Project>

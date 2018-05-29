@@ -6,21 +6,19 @@
     <ProtobufAfterTargets>CustomBuild</ProtobufAfterTargets>
   </PropertyGroup>
   <PropertyGroup>
-    <ProtobufDependsOn
-      Condition="'$(ConfigurationType)' != 'Makefile'">_SelectedFiles;$(ProtobufDependsOn)</ProtobufDependsOn>
+    <ProtobufDependsOn Condition="'$(ConfigurationType)' != 'Makefile'">_SelectedFiles;$(ProtobufDependsOn)</ProtobufDependsOn>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <Protobuf>
       <ProtoPath>.</ProtoPath>
-      <CppOut>$(OutDir)</CppOut>
-      <CppOutCpp>%(CppOut)%(Filename).pb.cc</CppOutCpp>
-      <CppOutH>%(CppOut)%(Filename).pb.h</CppOutH>
+      <CppOut>$(OutDir)\protobuf</CppOut>
       <Protoc>protoc.exe</Protoc>
       <ErrorFormat>msvs</ErrorFormat>
       <CommandLineTemplate>start /B /WAIT /D "%(RootDir)%(Directory)" %(Protoc) [AllOptions] [AdditionalOptions] "%(Filename)%(Extension)"
 exit /b %errorlevel%</CommandLineTemplate>
-      <Outputs>%(CppOutCpp);%(CppOutH)</Outputs>
-      <ExecutionDescription>Process "%(Filename)%(Extension)" protobuf file</ExecutionDescription>
+      <Outputs>%(CppOut)\%(Filename).pb.cc</Outputs>
+      <Outputs>%(CppOut)\%(Filename).pb.h</Outputs>
+      <ExecutionDescription>Protoc %(Filename)%(Extension)</ExecutionDescription>
     </Protobuf>
   </ItemDefinitionGroup>
 </Project>

@@ -45,6 +45,18 @@
     <ClInclude Include="..\targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="x64\Debug\protobuf\test.pb.h">
+      <Filter>Protobuf\x64\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="x64\Release\protobuf\test.pb.h">
+      <Filter>Protobuf\x64\Release</Filter>
+    </ClInclude>
+    <ClInclude Include="Debug\protobuf\test.pb.h">
+      <Filter>Protobuf\x86\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="Release\protobuf\test.pb.h">
+      <Filter>Protobuf\x86\Release</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\stdafx.cpp">
@@ -53,16 +65,16 @@
     <ClCompile Include="..\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="x64\Debug\test.pb.cc">
+    <ClCompile Include="x64\Debug\protobuf\test.pb.cc">
       <Filter>Protobuf\x64\Debug</Filter>
     </ClCompile>
-    <ClCompile Include="Debug\test.pb.cc">
+    <ClCompile Include="Debug\protobuf\test.pb.cc">
       <Filter>Protobuf\x86\Debug</Filter>
     </ClCompile>
-    <ClCompile Include="Release\test.pb.cc">
+    <ClCompile Include="Release\protobuf\test.pb.cc">
       <Filter>Protobuf\x86\Release</Filter>
     </ClCompile>
-    <ClCompile Include="x64\Release\test.pb.cc">
+    <ClCompile Include="x64\Release\protobuf\test.pb.cc">
       <Filter>Protobuf\x64\Release</Filter>
     </ClCompile>
   </ItemGroup>

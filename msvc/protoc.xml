@@ -1,36 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ProjectSchemaDefinitions xmlns="clr-namespace:Microsoft.Build.Framework.XamlTypes;assembly=Microsoft.Build.Framework" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:sys="clr-namespace:System;assembly=mscorlib" xmlns:transformCallback="Microsoft.Cpp.Dev10.ConvertPropertyCallback">
-  <Rule Name="Protobuf" PageTemplate="tool" DisplayName="Protobuf" SwitchPrefix="--" Order="200">
+  <Rule
+    Name="Protobuf"
+    PageTemplate="tool"
+    DisplayName="Protobuf"
+    SwitchPrefix="--"
+    Order="200">
     <Rule.DataSource>
-      <DataSource Persistence="ProjectFile" ItemType="Protobuf" />
+      <DataSource
+        Persistence="ProjectFile"
+        ItemType="Protobuf" />
     </Rule.DataSource>
     <Rule.Categories>
-      <Category Name="General">
+      <Category
+        Name="General">
         <Category.DisplayName>
           <sys:String>General</sys:String>
         </Category.DisplayName>
       </Category>
-      <Category Name="Protobuf Options">
+      <Category
+        Name="Protobuf Options">
         <Category.DisplayName>
           <sys:String>Protobuf Options</sys:String>
         </Category.DisplayName>
       </Category>
-      <Category Name="Command Line" Subtype="CommandLine">
+      <Category
+        Name="Command Line" Subtype="CommandLine">
         <Category.DisplayName>
           <sys:String>Command Line</sys:String>
         </Category.DisplayName>
       </Category>
     </Rule.Categories>
 
-    <StringListProperty Name="ProtoPath" Category="Protobuf Options" IsRequired="true" HelpUrl="https://www.gnu.org/software/Protobuf/manual/html_node/Protobuf-Options.html#Protobuf-Options" DisplayName="Proto Path" Description="Specify the directory in which to search for imports. --proto_path=PATH" Switch="proto_path=&quot;[value]&quot;"/>
-    <StringProperty Subtype="folder" Name="CppOut" Category="Protobuf Options" IsRequired="true" HelpUrl="https://www.gnu.org/software/Protobuf/manual/html_node/Protobuf-Options.html#Protobuf-Options" DisplayName="Cpp Output" Description="Generate C++ header and source. --cpp_out=OUT_DIR" Switch="cpp_out=&quot;[value]&quot;" />
+    <StringListProperty Name="ProtoPath" Category="Protobuf Options" IsRequired="true" HelpUrl="https://developers.google.com/protocol-buffers/docs/reference/cpp-generated#invocation" DisplayName="Proto Path" Description="Specify the directory in which to search for imports. --proto_path=PATH" Switch="proto_path=&quot;[value]&quot;"/>
+    <StringProperty Subtype="folder" Name="CppOut" Category="Protobuf Options" IsRequired="true" HelpUrl="https://developers.google.com/protocol-buffers/docs/reference/cpp-generated#invocation" DisplayName="Cpp Output" Description="Generate C++ header and source. --cpp_out=OUT_DIR" Switch="cpp_out=&quot;[value]&quot;" />
 
-    <EnumProperty Name="ErrorFormat" Category="Protobuf Options" HelpUrl="https://www.gnu.org/software/Protobuf/manual/html_node/Protobuf-Options.html#Protobuf-Options" DisplayName="Error Format" Description="Set a format in which to print errors. (--error_format=FORMAT)">
+    <EnumProperty Name="ErrorFormat" Category="Protobuf Options" HelpUrl="https://developers.google.com/protocol-buffers/docs/reference/cpp-generated#invocation" DisplayName="Error Format" Description="Set a format in which to print errors. (--error_format=FORMAT)">
       <EnumValue Name="gcc" DisplayName="gcc" Switch="error_format=gcc"/>
       <EnumValue Name="msvs" DisplayName="Visual Studio" Switch="error_format=msvs"/>
     </EnumProperty>
 
-    <BoolProperty Name="PrintFreeFieldNumbers" Category="Protobuf Options" DisplayName="Print Free Field Numbers" Description="Print the free field numbers of the messages defined in the given proto files. (--print_free_field_numbers)" HelpUrl="https://www.gnu.org/software/Protobuf/manual/html_node/Enabling-Traces.html#Enabling-Traces" Switch="print_free_field_numbers" />
+    <BoolProperty Name="PrintFreeFieldNumbers" Category="Protobuf Options" DisplayName="Print Free Field Numbers" Description="Print the free field numbers of the messages defined in the given proto files. (--print_free_field_numbers)" HelpUrl="https://developers.google.com/protocol-buffers/docs/reference/cpp-generated#invocation" Switch="print_free_field_numbers" />
 
     <StringListProperty Name="Inputs" Category="Command Line" IsRequired="true" Switch=" ">
       <StringListProperty.DataSource>
